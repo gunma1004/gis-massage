@@ -1,6 +1,26 @@
 import Link from 'next/link';
+import type { Metadata } from "next";
 
-// 앞서 준비하신 전체 지역 데이터 중 서울(seoul) 데이터 가져오기
+const SITE_URL = "https://gis-massage.netlify.app";
+const SITE_NAME = "기인서테라피";
+
+export const metadata: Metadata = {
+  title: `${SITE_NAME} | 서울 25개 구 전체 지역별 제휴 힐링 테라피 안내`,
+  description: "서울 전 지역(25개 구) 세부 동별 제휴 샵 정보를 편리하게 확인하세요. 기인서테라피에서 쾌적하고 신뢰할 수 있는 웰니스 프로그램을 만나보세요.",
+  alternates: {
+    canonical: `${SITE_URL}/seoul`,
+  },
+  openGraph: {
+    title: `${SITE_NAME} | 서울 25개 구 전체 지역별 제휴 힐링 테라피`,
+    description: "서울 전 지역(25개 구) 세부 동별 제휴 샵 정보를 편리하게 확인하세요.",
+    url: `${SITE_URL}/seoul`,
+    siteName: `${SITE_NAME} (GIS Massage)`,
+    locale: "ko_KR",
+    type: "website",
+  },
+};
+
+// 서울 25개 구 및 세부 동 데이터 전체 연동
 const seoulDistricts = {
   jongno: { name: "종로구", dongs: ["청운동", "효자동", "사직동", "삼청동", "부암동", "평창동", "무악동", "교남동", "가회동", "종로1.2.3.4가동", "종로5.6가동", "이화동", "혜화동", "창신1동", "창신2동", "창신3동", "숭인1동", "숭인2동"] },
   jung: { name: "중구", dongs: ["소공동", "회현동", "명동", "필동", "장충동", "광희동", "을지로동", "신당동", "다산동", "약수동", "청구동", "동화동", "황학동", "중림동"] },
@@ -35,7 +55,7 @@ export default function SeoulRegionPage() {
       <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/" className="text-xl font-bold text-sky-600">
-            케어나비 (CareNavi)
+            기인서테라피 (GIS Massage)
           </Link>
           <Link href="/" className="text-sm text-slate-500 hover:text-slate-800">
             &larr; 홈으로 돌아가기
@@ -79,7 +99,7 @@ export default function SeoulRegionPage() {
                 {districtVal.dongs.map((dong, idx) => (
                   <Link
                     key={idx}
-                    href={`/seoul/${districtKey}/${dong}/shop/1`}
+                    href={`/seoul/${districtKey}/${encodeURIComponent(dong)}`}
                     className="inline-flex items-center px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-medium text-slate-700 hover:bg-sky-50 hover:text-sky-600 hover:border-sky-300 transition"
                   >
                     {dong} &rarr;
@@ -92,8 +112,8 @@ export default function SeoulRegionPage() {
       </section>
 
       <footer className="bg-white border-t border-slate-200 py-8 text-center text-xs text-slate-400 mt-20">
-        <p>© 2026 CareNavi. All rights reserved.</p>
-        <p className="mt-1">도메인: https://carenavi.netlify.app/seoul/</p>
+        <p>© 2026 기인서테라피 (GIS Massage). All rights reserved.</p>
+        <p className="mt-1">도메인: https://gis-massage.netlify.app/seoul/</p>
       </footer>
     </main>
   );

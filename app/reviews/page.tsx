@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+const SITE_URL = "https://gis-massage.netlify.app";
+const SITE_NAME = "기인서테라피";
+
 export const metadata: Metadata = {
-  title: "실제 고객 생생후기 | 만족도 4.9 안심 이용 리뷰 - 케어나비(CareNavi)",
-  description: "서울·경기·인천 케어나비 실제 이용 고객 100% 솔직 후기 모음! 엄선된 제휴 샵 이용 만족도, 관리사 실력, 선입금 없는 안심 후불제 리뷰를 확인해 보세요.",
+  title: `실제 고객 생생후기 | 만족도 4.9 안심 이용 리뷰 - ${SITE_NAME}`,
+  description: "서울·경기·인천 기인서테라피 실제 이용 고객 100% 솔직 후기 모음! 엄선된 제휴 샵 이용 만족도, 관리사 실력, 선입금 없는 안심 후불제 리뷰를 확인해 보세요.",
   keywords: [
-    "케어나비 후기",
+    "기인서테라피 후기",
     "마사지 이용후기",
     "힐링테라피 솔직리뷰",
     "스웨디시 후기",
@@ -14,13 +17,13 @@ export const metadata: Metadata = {
     "인천 에스테틱 후기"
   ],
   alternates: {
-    canonical: "https://carenavi.netlify.app/reviews",
+    canonical: `${SITE_URL}/reviews`,
   },
   openGraph: {
-    title: "실제 고객 생생후기 | 케어나비(CareNavi) 검증된 100% 솔직 리뷰",
+    title: `실제 고객 생생후기 | ${SITE_NAME} 검증된 100% 솔직 리뷰`,
     description: "선입금 없는 안심 후불제와 엄선된 프리미엄 케어! 서울·경기·인천 고객님들이 직접 작성한 생생한 피로회복 후기를 만나보세요.",
-    url: "https://carenavi.netlify.app/reviews",
-    siteName: "케어나비 (CareNavi)",
+    url: `${SITE_URL}/reviews`,
+    siteName: `${SITE_NAME} (GIS Massage)`,
     locale: "ko_KR",
     type: "website",
     images: [
@@ -28,7 +31,7 @@ export const metadata: Metadata = {
         url: "/og-main.png",
         width: 1200,
         height: 630,
-        alt: "케어나비 실제 고객 생생후기",
+        alt: `${SITE_NAME} 실제 고객 생생후기`,
       },
     ],
   },
@@ -47,7 +50,7 @@ const reviews = [
     rate: "★★★★★ 5.0",
     course: "감성 스웨디시 90분",
     badge: "재이용 고객",
-    text: "야근 후에 피로가 심해 케어나비에서 신청했는데 안내도 친절하고 빠르게 연결되었어요. 어깨와 목에 뭉친 피로가 싹 풀려서 밤에 정말 꿀잠 잤습니다. 다음에도 다시 이용할 생각입니다!",
+    text: "야근 후에 피로가 심해 기인서테라피에서 신청했는데 안내도 친절하고 빠르게 연결되었어요. 어깨와 목에 뭉친 피로가 싹 풀려서 밤에 정말 꿀잠 잤습니다. 다음에도 다시 이용할 생각입니다!",
   },
   {
     name: "경기 수원시 영통구 고객님",
@@ -79,7 +82,7 @@ const reviews = [
     rate: "★★★★★ 5.0",
     course: "감성 스웨디시 60분",
     badge: "재이용 고객",
-    text: "타 플랫폼은 선입금 유도가 많아서 불안했는데, 케어나비는 확실한 투명 정찰제 및 후불 시스템이라 믿음이 갑니다. 친절하고 프라이빗한 케어 감사합니다.",
+    text: "타 플랫폼은 선입금 유도가 많아서 불안했는데, 기인서테라피는 확실한 투명 정찰제 및 후불 시스템이라 믿음이 갑니다. 친절하고 프라이빗한 케어 감사합니다.",
   },
 ];
 
@@ -94,10 +97,10 @@ export default function ReviewsPage() {
             REAL CUSTOMER REVIEWS
           </span>
           <h1 className="text-2xl md:text-4xl font-black text-slate-900 tracking-tight">
-            케어나비 실제 이용 고객 솔직 후기
+            {SITE_NAME} 실제 이용 고객 솔직 후기
           </h1>
           <p className="text-xs md:text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
-            서울·경기·인천 전지역에서 케어나비 제휴 서비스를 직접 경험하신 고객님들의 100% 솔직한 생생 후기입니다.
+            서울·경기·인천 전지역에서 {SITE_NAME} 제휴 서비스를 직접 경험하신 고객님들의 100% 솔직한 생생 후기입니다.
           </p>
         </section>
 
@@ -162,7 +165,7 @@ export default function ReviewsPage() {
             🛡️ 100% 안심 후불 정찰제 운영
           </h3>
           <p className="text-xs text-slate-600 max-w-md mx-auto leading-relaxed">
-            케어나비는 사전 선입금 없이 투명하고 안전한 안내 시스템을 고수하여 예약금 피해 걱정 없이 안심하고 이용하실 수 있습니다.
+            {SITE_NAME}는 사전 선입금 없이 투명하고 안전한 안내 시스템을 고수하여 예약금 피해 걱정 없이 안심하고 이용하실 수 있습니다.
           </p>
           <div className="pt-1">
             <a 
@@ -180,7 +183,7 @@ export default function ReviewsPage() {
             href="/"
             className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-sky-600 transition-colors font-medium"
           >
-            ← 케어나비 메인 홈으로 이동하기
+            ← {SITE_NAME} 메인 홈으로 이동하기
           </Link>
         </div>
 

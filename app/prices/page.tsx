@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+const SITE_URL = "https://gis-massage.netlify.app";
+const SITE_NAME = "기인서테라피";
+
 export const metadata: Metadata = {
-  title: "코스별 가격 안내 | 투명한 100% 후불 정찰제 - 케어나비(CareNavi)",
-  description: "서울·경기·인천 케어나비 투명한 코스별 가격 안내! 릴렉스, 타이, 아로마, VIP 맞춤 케어 비용과 100% 안심 후불제 예약 시스템을 확인하세요.",
+  title: `코스별 가격 안내 | 투명한 100% 후불 정찰제 - ${SITE_NAME}`,
+  description: "서울·경기·인천 기인서테라피 투명한 코스별 가격 안내! 릴렉스, 타이, 아로마, VIP 맞춤 케어 비용과 100% 안심 후불제 예약 시스템을 확인하세요.",
   keywords: [
-    "케어나비 가격",
+    "기인서테라피 가격",
     "테라피 가격",
     "홈케어 요금",
     "타이마사지 비용",
@@ -14,13 +17,13 @@ export const metadata: Metadata = {
     "후불제 바디케어"
   ],
   alternates: {
-    canonical: "https://carenavi.netlify.app/prices",
+    canonical: `${SITE_URL}/prices`,
   },
   openGraph: {
-    title: "코스별 가격 안내 | 케어나비(CareNavi) 투명한 후불 정찰제",
+    title: `코스별 가격 안내 | ${SITE_NAME} 투명한 후불 정찰제`,
     description: "선입금 없는 100% 안심 후불제! 릴렉스, 타이, 아로마 맞춤 코스별 요금을 투명하게 비교해 보세요.",
-    url: "https://carenavi.netlify.app/prices",
-    siteName: "케어나비 (CareNavi)",
+    url: `${SITE_URL}/prices`,
+    siteName: `${SITE_NAME} (GIS Massage)`,
     locale: "ko_KR",
     type: "website",
     images: [
@@ -28,7 +31,7 @@ export const metadata: Metadata = {
         url: "/og-main.png",
         width: 1200,
         height: 630,
-        alt: "케어나비 코스별 가격 안내",
+        alt: `${SITE_NAME} 코스별 가격 안내`,
       },
     ],
   },
@@ -80,7 +83,7 @@ export default function PricesPage() {
             TRANSPARENT PRICE POLICY
           </span>
           <h1 className="text-2xl md:text-4xl font-black text-slate-900 tracking-tight">
-            케어나비 투명한 코스별 가격 안내
+            {SITE_NAME} 투명한 코스별 가격 안내
           </h1>
           <p className="text-xs md:text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
             100% 후불제 안심 예약 시스템으로 운영되며, 방문 전 일체의 선입금이나 예약금을 요구하지 않습니다.
@@ -97,7 +100,7 @@ export default function PricesPage() {
               선입금 ZERO · 100% 현장 결제 보장
             </h2>
             <p className="text-xs text-slate-600 leading-relaxed">
-              케어나비의 모든 제휴점은 서비스 진행 후 현장 결제로 진행되어 안심하고 이용하실 수 있습니다.
+              {SITE_NAME}의 모든 제휴점은 서비스 진행 후 현장 결제로 진행되어 안심하고 이용하실 수 있습니다.
             </p>
           </div>
         </section>
@@ -175,7 +178,7 @@ export default function PricesPage() {
               href="/"
               className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-sky-600 transition-colors font-medium"
             >
-              ← 케어나비 메인 홈으로 이동하기
+              ← {SITE_NAME} 메인 홈으로 이동하기
             </Link>
           </div>
         </section>

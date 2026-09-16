@@ -1,8 +1,8 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // 🌐 케어나비 Netlify 공식 도메인
-  const baseUrl = 'https://carenavi.netlify.app';
+  // 🌐 기인서테라피 Netlify 공식 도메인
+  const baseUrl = 'https://gis-massage.netlify.app';
 
   // 1. 메인 홈 페이지 (클린 웰니스 플랫폼)
   const mainRoute: MetadataRoute.Sitemap = [
@@ -108,15 +108,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { region: 'gyeonggi', district: '양평군' },
     { region: 'gyeonggi', district: '연천군' },
 
-    // ─── 인천광역시 (10개 구·군) ───
-    { region: 'incheon', district: '중구' },
-    { region: 'incheon', district: '동구' },
+    // ─── 인천광역시 (최신 행정구역 개편 반영) ───
+    { region: 'incheon', district: '제물포구' },
+    { region: 'incheon', district: '영종구' },
     { region: 'incheon', district: '미추홀구' },
     { region: 'incheon', district: '연수구' },
     { region: 'incheon', district: '남동구' },
     { region: 'incheon', district: '부평구' },
     { region: 'incheon', district: '계양구' },
-    { region: 'incheon', district: '서구' },
+    { region: 'incheon', district: '서해구' },
+    { region: 'incheon', district: '검단구' },
     { region: 'incheon', district: '강화군' },
     { region: 'incheon', district: '옹진군' },
   ];

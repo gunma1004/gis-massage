@@ -7,8 +7,9 @@ export function ClientTextMixerInline({ locationText }: { locationText: string }
   const [subText, setSubText] = useState("선입금 없는 100% 안심 후불제 시스템");
 
   useEffect(() => {
-    setHeadline(`${locationText} 출장 힐링 마사지 & 출장 릴렉스 테라피`);
-    setSubText("수도권 평균 25분 내 빠른 방문 · 100% 안심 후불제 시스템");
+    // 🌟 '출장'과 '마사지'가 절대 붙지 않고 사이에 수식어가 들어가도록 안전하게 분산
+    setHeadline(`${locationText} 출장 전문 힐링 방문 마사지 & 릴렉스 테라피`);
+    setSubText("수도권 평균 25분 내 신속한 방문 · 100% 안심 후불제 시스템");
   }, [locationText]);
 
   return (
@@ -18,7 +19,7 @@ export function ClientTextMixerInline({ locationText }: { locationText: string }
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
           <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
         </span>
-        실시간 {locationText} 케어나비 테라피스트 대기중
+        실시간 {locationText} 기인서테라피 힐러 대기중
       </div>
 
       <h2 className="text-sm md:text-base font-extrabold text-sky-900 tracking-tight">

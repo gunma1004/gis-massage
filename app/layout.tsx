@@ -2,38 +2,35 @@ import type { Metadata } from "next";
 import "./globals.css";
 import NavigationHeader from "./NavigationHeader";
 
+const SITE_URL = "https://gis-massage.netlify.app";
+const SITE_NAME = "기인서테라피";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://carenavi.netlify.app"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    // 네이버 검색 최적화 규격 준수
-    default: "케어나비 (CareNavi) | 서울·경기·인천 프리미엄 힐링 테라피 예약",
-    template: "%s | 케어나비 (CareNavi)"
+    // 네이버 검색 최적화 규격 준수 (경기·인천·서울 테라피)
+    default: `${SITE_NAME} | 경기·인천·서울 프리미엄 힐링 테라피 플랫폼`,
+    template: `%s | ${SITE_NAME}`
   },
-  // 스팸 키워드를 배제한 클린하고 신뢰감 주는 디스크립션
-  description: "서울, 경기, 인천 지역의 검증된 프리미엄 힐링 테라피 및 에스테틱 정보를 한눈에! 내 주변 맞춤형 휴식 공간과 제휴 샵 정보를 빠르고 편리하게 확인하세요.",
+  // 스팸 키워드를 배제한 클린하고 신뢰감 주는 메인 디스크립션
+  description: "경기, 인천, 서울 지역의 검증된 프리미엄 힐링 테라피 및 바디케어 정보를 한눈에! 내 주변 맞춤형 휴식 공간과 제휴 샵 정보를 빠르고 편리하게 확인하세요.",
   keywords: [
-    "케어나비",
-    "CareNavi",
-    "서울 마사지",
-    "경기 힐링 테라피",
-    "인천 에스테틱",
+    "기인서테라피",
+    "경기 마사지",
+    "인천 힐링 테라피",
+    "서울 에스테틱",
     "수도권 마사지 플랫폼",
     "바디케어 제휴 샵",
     "방문 힐링"
   ],
   alternates: {
-    canonical: "https://carenavi.netlify.app",
-  },
-  verification: {
-    other: {
-      "naver-site-verification": "f5b08fea69af6b297e2bf76136c8596c95437ade", // 필요시 본인 인증 코드로 변경하세요
-    },
+    canonical: SITE_URL,
   },
   openGraph: {
-    title: "케어나비 (CareNavi) | 서울·경기·인천 힐링 테라피 플랫폼",
-    description: "서울, 경기, 인천 전 지역의 엄선된 프리미엄 힐링 테라피 및 에스테틱 정보를 간편하게 찾아보세요.",
-    url: "https://carenavi.netlify.app",
-    siteName: "케어나비",
+    title: `${SITE_NAME} | 경기·인천·서울 힐링 테라피 플랫폼`,
+    description: "경기, 인천, 서울 전 지역의 엄선된 프리미엄 힐링 테라피 및 바디케어 정보를 간편하게 찾아보세요.",
+    url: SITE_URL,
+    siteName: SITE_NAME,
     locale: "ko_KR",
     type: "website",
     images: [
@@ -41,7 +38,7 @@ export const metadata: Metadata = {
         url: "/og-main.png",
         width: 1200,
         height: 630,
-        alt: "케어나비 프리미엄 힐링 플랫폼 안내",
+        alt: "기인서테라피 프리미엄 힐링 플랫폼 안내",
       },
     ],
   },
