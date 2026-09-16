@@ -9,6 +9,9 @@ interface PageProps {
   }>;
 }
 
+const SITE_URL = "https://gis-massage.netlify.app";
+const SITE_NAME = "기인서테라피";
+
 const shopData: Record<string, {
   name: string;
   phone: string;
@@ -57,7 +60,7 @@ const shopData: Record<string, {
     phone: "0507-1280-3303",
     badge: "재방문율 최우수",
     image: "/shop2.jpg",
-    desc: "품격 있는 힐링을 선사하는 프라이빗 방문 테라피! 아로디시부터 VIP 스웨디시까지 완벽 구비.",
+    desc: "최고급 천연 오일을 활용한 감성 아로마 전신 바디케어 프로그램 및 제휴 샵.",
     courses: [
       {
         category: "아로디시 코스",
@@ -78,7 +81,7 @@ const shopData: Record<string, {
         ]
       },
       {
-        category: "한국인스웨디시 코스",
+        category: "한국인 스웨디시 코스",
         badge: "BEST",
         desc: "한국인 전문 관리사의 섬세하고 수준 높은 프리미엄 맞춤 테라피.",
         items: [
@@ -94,11 +97,11 @@ const shopData: Record<string, {
     phone: "0507-1280-3193",
     badge: "만족도 1위 추천",
     image: "/shop3.jpg",
-    desc: "재방문율 1위 만족도! 정통 타이 마사지부터 올인원 VIP 코스까지 체계적인 프로그램.",
+    desc: "재방문율 1위 만족도! 정통 힐링 테라피부터 올인원 VIP 코스까지 체계적인 프로그램.",
     courses: [
       {
-        category: "타이코스",
-        desc: "뭉치고 굳은 전신 근육을 시원하게 풀어주는 정통 스트레칭 마사지.",
+        category: "건식 코스",
+        desc: "뭉치고 굳은 전신 근육을 시원하게 풀어주는 정통 스트레칭 케어.",
         items: [
           { time: "60분", price: "60,000원" },
           { time: "90분", price: "80,000원", recommend: true },
@@ -136,7 +139,7 @@ const shopData: Record<string, {
       },
       {
         category: "VIP 프리미엄 코스",
-        desc: "타이 & 아로마 & 풋코스를 모두 즐길 수 있는 올인원 150분 힐링.",
+        desc: "종합 바디케어를 모두 즐길 수 있는 올인원 150분 힐링.",
         items: [
           { time: "150분", price: "160,000원", recommend: true }
         ]
@@ -215,10 +218,10 @@ const shopData: Record<string, {
     phone: "0507-1280-3223",
     badge: "야간 힐링 만족 1위",
     image: "/shop5.jpg",
-    desc: "선입금 없는 100% 후불제! 깊은 밤 지친 하루의 피로를 타이부터 스웨디시까지 완벽하게 날려버리세요.",
+    desc: "선입금 없는 100% 후불제! 깊은 밤 지친 하루의 피로를 완벽하게 날려버리세요.",
     courses: [
       {
-        category: "타이코스",
+        category: "건식 코스",
         desc: "오일 없이 정통 건식 지압과 스트레칭으로 피로를 시원하게 해소.",
         items: [
           { time: "60분", price: "60,000원" },
@@ -257,7 +260,7 @@ const shopData: Record<string, {
       },
       {
         category: "VIP 프리미엄 코스",
-        desc: "타이 & 아로마 & 풋코스를 종합적으로 즐기는 150분 올인원 코스.",
+        desc: "종합 바디케어를 종합적으로 즐기는 150분 올인원 코스.",
         items: [
           { time: "150분", price: "160,000원", recommend: true }
         ]
@@ -284,90 +287,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const cityText = city.toUpperCase() === "SEOUL" ? "서울" : city.toUpperCase() === "GYEONGGI" ? "경기" : "인천";
   const locationPrefix = `${cityText} ${district}`;
 
-  const charSum = (locationPrefix + shop.name + "carenavi_district_split").split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const variantIndex = charSum % 30;
-
-  // 🌟 '출장'과 '마사지'가 절대 붙지 않고 분산된 30개 고유 패턴 (샵 이름 제외)
-  const titleVariants = [
-    /* 0 */ `${locationPrefix} 전문 출장 타이 마사지 - 케어나비`,
-    /* 1 */ `${locationPrefix} 전문 출장 아로마 마사지 - 케어나비`,
-    /* 2 */ `${locationPrefix} 전문 출장 스웨디시 마사지 · 케어나비`,
-    /* 3 */ `[케어나비] ${locationPrefix} 24시 출장 타이 마사지 제휴`,
-    /* 4 */ `${locationPrefix} 맞춤 출장 아로마 마사지 및 릴렉스 케어 | 케어나비`,
-    /* 5 */ `${locationPrefix} 전문 출장 스웨디시 마사지 가이드 - 케어나비`,
-    /* 6 */ `[안심후불] ${locationPrefix} 추천 출장 타이 마사지 - 케어나비`,
-    /* 7 */ `${locationPrefix} 맞춤 출장 아로마 마사지 & 힐링 케어 · 케어나비`,
-    /* 8 */ `${locationPrefix} 전문 출장 스웨디시 마사지 가격 안내 - 케어나비`,
-    /* 9 */ `케어나비 | ${locationPrefix} 신속 출장 타이 마사지 샵`,
-    /* 10 */ `${locationPrefix} 24시 출장 아로마 마사지 신속 방문 · 케어나비`,
-    /* 11 */ `${locationPrefix} 프리미엄 출장 스웨디시 마사지 정보 - 케어나비`,
-    /* 12 */ `[추천 제휴] ${locationPrefix} 전문 출장 타이 마사지 - 케어나비`,
-    /* 13 */ `${locationPrefix} 1:1 맞춤 출장 아로마 마사지 - 케어나비`,
-    /* 14 */ `케어나비 ${locationPrefix} 프리미엄 출장 스웨디시 마사지`,
-    /* 15 */ `${locationPrefix} 전문 출장 타이 마사지 코스별 요금표 - 케어나비`,
-    /* 16 */ `${locationPrefix} 우수 제휴 출장 아로마 마사지점 - 케어나비`,
-    /* 17 */ `케어나비 추천 ${locationPrefix} 맞춤 출장 스웨디시 마사지`,
-    /* 18 */ `[24시 후불제] ${locationPrefix} 전문 출장 타이 마사지 - 케어나비`,
-    /* 19 */ `${locationPrefix} 최종 출장 아로마 마사지 안내 - 케어나비`,
-    /* 20 */ `${locationPrefix} 안심 출장 타이 마사지 안내 - 케어나비`,
-    /* 21 */ `${locationPrefix} 쾌적한 출장 아로마 마사지 안내 - 케어나비`,
-    /* 22 */ `${locationPrefix} 품격 있는 출장 스웨디시 마사지 안내 - 케어나비`,
-    /* 23 */ `케어나비 ${locationPrefix} 베테랑 출장 타이 마사지`,
-    /* 24 */ `케어나비 ${locationPrefix} 힐링 출장 아로마 마사지`,
-    /* 25 */ `${locationPrefix} 지역 맞춤 출장 타이 마사지 샵 - 케어나비`,
-    /* 26 */ `${locationPrefix} 지역 맞춤 출장 아로마 마사지 샵 - 케어나비`,
-    /* 27 */ `${locationPrefix} 하이엔드 출장 타이 마사지 - 케어나비`,
-    /* 28 */ `${locationPrefix} 하이엔드 출장 아로마 마사지 - 케어나비`,
-    /* 29 */ `${locationPrefix} 신뢰할 수 있는 출장 타이 마사지 - 케어나비`
-  ];
-
-  const descriptionVariants = [
-    /* 0 */ `${locationPrefix} 전문 출장 타이 마사지 제휴처 ${shop.name}. 선입금 없는 100% 안심 후불제 코스 및 가격 정보를 케어나비에서 확인하세요.`,
-    /* 1 */ `${locationPrefix} 맞춤 출장 아로마 마사지 제휴 샵 ${shop.name}. 24시 신속 방문과 투명한 코스별 가격비교를 제공합니다.`,
-    /* 2 */ `선입금 사기 걱정 없는 100% 후불제! ${locationPrefix} 프리미엄 출장 스웨디시 마사지 프로그램과 맞춤 케어를 ${shop.name}에서 만나보세요.`,
-    /* 3 */ `${locationPrefix} 릴렉스 케어 전문 ${shop.name}. 지친 피로를 풀어주는 1:1 맞춤 출장 마사지 서비스를 안내합니다.`,
-    /* 4 */ `${locationPrefix} 24시 출장 타이 마사지 예약 가이드. 검증된 ${shop.name} 제휴점에서 편안하고 안심되는 휴식을 누려보세요.`,
-    /* 5 */ `${locationPrefix} 전문 출장 아로마 마사지 점 ${shop.name}. 25분 내 신속한 방문과 정직한 후불제 시스템을 보장합니다.`,
-    /* 6 */ `안심하고 이용하는 ${locationPrefix} 우수 출장 스웨디시 마사지 ${shop.name}! 선입금 0원, 100% 후불제로 쾌적한 전신 바디케어를 경험하세요.`,
-    /* 7 */ `${locationPrefix} 특화 제휴 샵 ${shop.name}. 세심한 터치로 일상의 피로를 말끔히 비워내 드리는 출장 마사지 서비스.`,
-    /* 8 */ `${locationPrefix} 전문 출장 타이 마사지 코스별 상세 요금표 안내. ${shop.name}의 투명하고 합리적인 방문 테라피 프로그램을 확인하세요.`,
-    /* 9 */ `${locationPrefix} 실속 있는 출장 아로마 마사지 우수 제휴점 ${shop.name}. 언제나 편리하게 이용할 수 있는 실시간 예약 가이드.`,
-    /* 10 */ `케어나비가 엄선한 ${locationPrefix} 안전 출장 스웨디시 마사지 ${shop.name}. 100% 후불제로 안전하고 편안한 나만의 홈스파를 즐겨보세요.`,
-    /* 11 */ `${locationPrefix} 전문 ${shop.name}! 숙련된 힐러진의 정성스러운 1:1 방문 출장 마사지 케어 안내.`,
-    /* 12 */ `${locationPrefix} 24시 연중무휴 운영 ${shop.name}. 깊은 이완과 힐링을 선사하는 고품격 방문 출장 마사지 프로그램.`,
-    /* 13 */ `${locationPrefix} 투명한 출장 아로마 마사지 제휴 정보. ${shop.name}에서 제공하는 정직한 코스별 가격을 비교하세요.`,
-    /* 14 */ `신속한 방문과 친절한 서비스! ${locationPrefix} 전문 출장 스웨디시 마사지 ${shop.name}의 안심 후불제 프로그램을 만나보세요.`,
-    /* 15 */ `${locationPrefix} 인기 제휴점 ${shop.name}. 지친 몸과 마음에 편안한 쉼을 선물해 드리는 출장 마사지 힐링 스팟.`,
-    /* 16 */ `${locationPrefix} 선입금 없는 안전한 후불 시스템으로 부담 없이 이용하는 출장 타이 마사지 ${shop.name}.`,
-    /* 17 */ `${locationPrefix} 맞춤형 출장 아로마 마사지 솔루션 ${shop.name}. 굳은 전신 근육을 시원하게 풀어주는 전문 방문 테라피.`,
-    /* 18 */ `${locationPrefix} 투명하고 정직한 제휴 정보를 제공하는 출장 스웨디시 마사지 가이드 ${shop.name}.`,
-    /* 19 */ `${locationPrefix} 전문 ${shop.name}! 최고급 오일 테라피와 함께 온전한 출장 마사지 휴식을 누려보세요.`,
-    /* 20 */ `${locationPrefix} 24시간 언제든 빠르고 정확하게 연결되는 출장 타이 마사지 제휴 안내 ${shop.name}.`,
-    /* 21 */ `${locationPrefix} 프라이빗 맞춤 케어로 일상의 활력을 되찾아주는 출장 아로마 마사지 제휴 샵 ${shop.name}.`,
-    /* 22 */ `100% 후불제로 안전한 ${locationPrefix} 출장 스웨디시 마사지 ${shop.name}. 출발 전 선입금을 요구하지 않는 믿을 수 있는 제휴점.`,
-    /* 23 */ `${locationPrefix} 합리적인 출장 타이 마사지 코스 요금을 ${shop.name}에서 지금 확인하세요.`,
-    /* 24 */ `${locationPrefix} 베테랑 테라피스트가 선사하는 고품격 출장 아로마 마사지 요금 및 예약 안내 ${shop.name}.`,
-    /* 25 */ `${locationPrefix} 신속한 방문 배차로 만족도를 높여주는 출장 스웨디시 마사지 우수 제휴 샵 ${shop.name}.`,
-    /* 26 */ `${locationPrefix} 전문 관리사 배정 ${shop.name}. 부드러운 림프 순환과 출장 마사지 힐링을 위한 최적의 선택.`,
-    /* 27 */ `케어나비 공식 ${locationPrefix} 출장 타이 마사지 ${shop.name}. 쾌적하고 편안한 방문 휴식 공간 제휴 정보를 전해드립니다.`,
-    /* 28 */ `${locationPrefix} 묵은 피로를 시원하게 날려버리는 출장 아로마 마사지 제휴 프로그램 ${shop.name}.`,
-    /* 29 */ `${locationPrefix} 최종 이용 가이드 ${shop.name}. 100% 안심 후불제 시스템으로 편안하고 안전하게 즐기는 출장 마사지.`
-  ];
-
-  const finalTitle = titleVariants[variantIndex];
-  const finalDescription = descriptionVariants[variantIndex];
+  const titleText = `${locationPrefix} 프리미엄 힐링 테라피 안내 - ${shop.name} (${SITE_NAME})`;
+  const descriptionText = `${locationPrefix} 지역 우수 제휴 샵 ${shop.name}. 선입금 없는 100% 안심 후불제 코스 및 가격 정보를 ${SITE_NAME}에서 확인하세요.`;
 
   return {
-    title: finalTitle,
-    description: finalDescription,
+    title: titleText,
+    description: descriptionText,
     alternates: {
-      canonical: `https://carenavi.netlify.app/${city}/${district}/shop/${id}`,
+      canonical: `${SITE_URL}/${city}/${district}/shop/${id}`,
     },
     openGraph: {
-      title: finalTitle,
-      description: finalDescription,
-      url: `https://carenavi.netlify.app/${city}/${district}/shop/${id}`,
-      siteName: "케어나비 (CareNavi)",
+      title: titleText,
+      description: descriptionText,
+      url: `${SITE_URL}/${city}/${district}/shop/${id}`,
+      siteName: `${SITE_NAME} (GIS Massage)`,
       locale: "ko_KR",
       type: "website",
       images: [{ url: shop.image, width: 800, height: 600, alt: shop.name }],
@@ -382,13 +315,13 @@ export default async function DistrictShopDetailPage({ params }: PageProps) {
 
   const cityText = city.toUpperCase() === "SEOUL" ? "서울" : city.toUpperCase() === "GYEONGGI" ? "경기" : "인천";
   const locationPrefix = `${cityText} ${district}`;
-  const displayShopTitle = `${locationPrefix} 전문 출장 타이 마사지 - ${shop.name}`;
+  const displayShopTitle = `${locationPrefix} 프리미엄 힐링 테라피 - ${shop.name}`;
 
   return (
     <div className="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans pb-28">
       <header className="bg-white border-b border-slate-200 sticky top-0 z-40 px-4 py-3 shadow-sm">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
-          <Link href="/" className="text-xl font-bold text-sky-600">케어나비 (CareNavi)</Link>
+          <Link href="/" className="text-xl font-bold text-sky-600">{SITE_NAME} (GIS Massage)</Link>
           <Link href={`/${city}/${district}`} className="text-xs font-bold text-sky-600 bg-sky-50 px-3 py-1.5 rounded-xl border border-sky-100 hover:bg-sky-600 hover:text-white transition-all">
             &larr; {district} 목록으로
           </Link>
@@ -415,10 +348,18 @@ export default async function DistrictShopDetailPage({ params }: PageProps) {
           <div className="space-y-6">
             {shop.courses.map((courseGroup, idx) => (
               <div key={idx} className="bg-slate-50 border border-slate-200 p-5 rounded-2xl space-y-4">
-                <h3 className="font-extrabold text-slate-900 text-base">{courseGroup.category}</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="flex justify-between items-center">
+                  <h3 className="font-extrabold text-slate-900 text-base">{courseGroup.category}</h3>
+                  {courseGroup.badge && (
+                    <span className="text-[10px] bg-sky-100 text-sky-700 font-bold px-2.5 py-0.5 rounded-full">
+                      {courseGroup.badge}
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-slate-500">{courseGroup.desc}</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {courseGroup.items.map((item, itemIdx) => (
-                    <div key={itemIdx} className="p-3 bg-white rounded-xl border border-slate-200 flex justify-between items-center">
+                    <div key={itemIdx} className="p-3.5 bg-white rounded-xl border border-slate-200 flex justify-between items-center shadow-2xs">
                       <span className="text-xs font-bold text-slate-700">⏱️ {item.time}</span>
                       <span className="text-sm font-black text-sky-600">{item.price}</span>
                     </div>
@@ -432,7 +373,7 @@ export default async function DistrictShopDetailPage({ params }: PageProps) {
 
       <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-slate-200 p-3 md:p-4 shadow-lg">
         <div className="max-w-4xl mx-auto grid grid-cols-2 gap-3">
-          <a href={`tel:${shop.phone}`} className="flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-black py-3.5 rounded-2xl text-xs md:text-sm">📞 전화예약</a>
+          <a href={`tel:${shop.phone}`} className="flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-black py-3.5 rounded-2xl text-xs md:text-sm shadow-sm">📞 전화예약 ({shop.phone})</a>
           <a href={`sms:${shop.phone}`} className="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-900 font-black py-3.5 rounded-2xl text-xs md:text-sm">💬 문자상담</a>
         </div>
       </div>

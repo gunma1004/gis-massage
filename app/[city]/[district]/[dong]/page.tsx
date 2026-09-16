@@ -28,14 +28,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const locationKeyword = `${cityName} ${districtName} ${dongName}`;
 
   return {
-    title: `${locationKeyword} 프리미엄 힐링 테라피 및 바디케어 안내 - ${SITE_NAME}`,
-    description: `${locationKeyword} 지역 프리미엄 힐링 테라피 및 바디케어 제휴 샵 안내. 투명한 가격과 쾌적한 휴식 공간 정보를 ${SITE_NAME}에서 확인하세요.`,
+    title: `${locationKeyword} 프리미엄 마사지 테라피 및 바디케어 안내 - ${SITE_NAME}`,
+    description: `${locationKeyword} 지역 프리미엄 마사지 테라피 및 바디케어 제휴 샵 안내. 투명한 가격과 쾌적한 휴식 공간 정보를 ${SITE_NAME}에서 확인하세요.`,
     alternates: {
       canonical: `${SITE_URL}/${city}/${district}/${dong}`,
     },
     openGraph: {
-      title: `${locationKeyword} 프리미엄 힐링 테라피 및 바디케어 안내 - ${SITE_NAME}`,
-      description: `${locationKeyword} 지역 프리미엄 힐링 테라피 및 바디케어 제휴 샵 안내.`,
+      title: `${locationKeyword} 프리미엄 마사지 테라피 및 바디케어 안내 - ${SITE_NAME}`,
+      description: `${locationKeyword} 지역 프리미엄 마사지 테라피 및 바디케어 제휴 샵 안내.`,
       url: `${SITE_URL}/${city}/${district}/${dong}`,
       siteName: `${SITE_NAME} (GIS Massage)`,
       locale: "ko_KR",
