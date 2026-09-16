@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { regionData } from "@/lib/regions";
-import RandomDistrictList from "@/components/RandomDistrictList";
+import RandomDistrictShopList from "@/components/RandomDistrictShopList"; // 🌟 분리된 클라이언트 컴포넌트 import
 
 interface PageProps {
   params: Promise<{
     city: string;
+    district: string;
   }>;
 }
 
@@ -14,51 +15,25 @@ const SITE_NAME = "기인서테라피";
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const resolvedParams = await params;
-  const cityKey = resolvedParams.city.toLowerCase();
-  const region = regionData[cityKey] || regionData["seoul"];
-
-  const charSum = (cityKey + "gis_massage_city").split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const variantIndex = charSum % 10;
-
-  const titleVariants = [
-    /* 0 */ `${region.name} 지역별 힐링 테라피 제휴 안내 - ${SITE_NAME}`,
-    /* 1 */ `${region.name} 프리미엄 테라피 및 맞춤 케어 가이드 | ${SITE_NAME}`,
-    /* 2 */ `[${SITE_NAME}] ${region.name} 전문 바디케어 및 릴렉스 테라피 샵`,
-    /* 3 */ `${region.name} 구·군별 정통 웰니스 프로그램 및 제휴처 모음`,
-    /* 4 */ `${region.name} 안심 힐링 스페이스 정보 - ${SITE_NAME}`,
-    /* 5 */ `[공식 제휴] ${region.name} 쾌적한 아로마 & 스웨디시 케어`,
-    /* 6 */ `${region.name} 1:1 맞춤형 피로회복 테라피 안내 - ${SITE_NAME}`,
-    /* 7 */ `체계적인 바디케어 | ${region.name} 전문 제휴 가이드`,
-    /* 8 */ `${region.name} 도심 속 힐링, 프리미엄 프로그램`,
-    /* 9 */ `${SITE_NAME} 추천 ${region.name} 맞춤 힐링 제휴 정보`
-  ];
-
-  const descriptionVariants = [
-    /* 0 */ `${region.name} 지역 검증된 프리미엄 힐링 테라피 제휴 샵 안내. 투명한 가격과 쾌적한 휴식 공간 정보를 ${SITE_NAME}에서 확인하세요.`,
-    /* 1 */ `${region.name} 맞춤형 바디케어 프로그램 안내. 지친 일상 속 편안한 휴식과 피로 회복을 돕는 전문 제휴처 정보를 제공합니다.`,
-    /* 2 */ `엄선된 ${region.name} 웰니스 테라피 가이드. 투명하고 정직한 정찰제 운영으로 편안하고 쾌적한 휴식을 누려보세요.`,
-    /* 3 */ `${region.name} 편안한 휴식 공간과 릴렉싱 정보. 숙련된 테라피스트의 맞춤 프로그램을 안내해 드립니다.`,
-    /* 4 */ `${region.name} 프라이빗 맞춤 테라피 제휴 샵 모음. 신뢰할 수 있는 시설과 품격 있는 서비스를 비교해 보세요.`,
-    /* 5 */ `${region.name} 전신 피로회복 힐링 테라피 안내. 뭉친 근육을 부드럽게 이완하는 전문 바디케어 프로그램입니다.`,
-    /* 6 */ `${region.name} 프리미엄 아로마 및 스웨디시 제휴 샵 정보. 심신 안정을 돕는 고품격 케어를 확인하세요.`,
-    /* 7 */ `웰니스 프로그램 요금 및 코스 안내. 합리적이고 투명한 정찰제로 안심하고 이용하실 수 있습니다.`,
-    /* 8 */ `베테랑 테라피스트의 ${region.name} 맞춤 케어. 개인별 컨디션에 맞춘 최적의 힐링 솔루션을 제공합니다.`,
-    /* 9 */ `${SITE_NAME}가 엄선한 ${region.name} 안심 힐링 테라피 공간. 위생적이고 아늑한 제휴 샵 정보를 전해드립니다.`
-  ];
-
-  const finalTitle = titleVariants[variantIndex];
-  const finalDescription = descriptionVariants[variantIndex];
+  const { city, district } = resolvedParams;
+  
+  const region = regionData[city.toLowerCase()];
+  const districtInfo = region?.districts[district.toLowerCase()];
+  
+  const cityName = city.toLowerCase() === "seoul" ? "서울" : city.toLowerCase() === "incheon" ? "인천" : "경기";
+  const districtName = districtInfo ? districtInfo.name : district;
+  const locationKeyword = `${cityName} ${districtName}`;
 
   return {
-    title: finalTitle,
-    description: finalDescription,
+    title: `${locationKeyword} 프리미엄 힐링 테라피 및 바디케어 안내 - ${SITE_NAME}`,
+    description: `${locationKeyword} 지역 프리미엄 힐링 테라피 및 바디케어 제휴 샵 안내. 투명한 가격과 쾌적한 휴식 공간 정보를 ${SITE_NAME}에서 확인하세요.`,
     alternates: {
-      canonical: `${SITE_URL}/${cityKey}/`,
+      canonical: `${SITE_URL}/${city}/${district}`,
     },
     openGraph: {
-      title: finalTitle,
-      description: finalDescription,
-      url: `${SITE_URL}/${cityKey}/`,
+      title: `${locationKeyword} 프리미엄 힐링 테라피 및 바디케어 안내 - ${SITE_NAME}`,
+      description: `${locationKeyword} 지역 프리미엄 힐링 테라피 및 바디케어 제휴 샵 안내.`,
+      url: `${SITE_URL}/${city}/${district}`,
       siteName: `${SITE_NAME} (GIS Massage)`,
       locale: "ko_KR",
       type: "website",
@@ -66,56 +41,67 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function CityPage({ params }: PageProps) {
+export default async function DistrictPage({ params }: PageProps) {
   const resolvedParams = await params;
-  const cityKey = resolvedParams.city.toLowerCase();
-  const region = regionData[cityKey] || regionData["seoul"];
+  const { city, district } = resolvedParams;
 
-  const districtsArray = Object.entries(region.districts).map(([distKey, distVal]) => ({
-    distKey,
-    ...distVal,
-  }));
+  const cityName = city.toLowerCase() === "seoul" ? "서울" : city.toLowerCase() === "incheon" ? "인천" : "경기";
+  const region = regionData[city.toLowerCase()];
+  const districtInfo = region?.districts[district.toLowerCase()];
+  const districtName = districtInfo ? districtInfo.name : district;
+  const fullTitle = `${cityName} ${districtName}`;
+
+  const shops = [
+    { id: 1, name: `✨ ${fullTitle} 제휴 한국골든테라피`, desc: "고품격 릴렉싱 & 딥티슈 피로회복! 전문 테라피스트의 품격 있는 1:1 맞춤 바디케어", phone: "0507-1280-3361", price: "맞춤 코스별 상이", image: "/shop1.jpg" },
+    { id: 2, name: `🌸 ${fullTitle} 제휴 한국미인테라피`, desc: "최고급 천연 오일을 활용한 감성 아로마 전신 바디케어 프로그램", phone: "0507-1280-3303", price: "맞춤 코스별 상이", image: "/shop2.jpg" },
+    { id: 3, name: `💎 ${fullTitle} 제휴 주주테라피`, desc: "재방문율 높은 만족도! 철저한 위생 관리와 프라이빗 힐링 바디케어 서비스 제공", phone: "0507-1280-3193", price: "맞춤 코스별 상이", image: "/shop3.jpg" },
+    { id: 4, name: `👑 ${fullTitle} 제휴 퀸즈홈테라피`, desc: "품격 있게 누리는 홈케어! 전문 힐러들의 체형 맞춤형 피로회복 특화 프로그램", phone: "0507-1280-3334", price: "맞춤 코스별 상이", image: "/shop4.jpg" },
+    { id: 5, name: `🌙 ${fullTitle} 제휴 오늘밤테라피`, desc: "엄선된 우수 제휴점! 수도권 전지역 쾌적하고 편안한 방문 힐링 바디케어", phone: "0507-1280-3223", price: "맞춤 코스별 상이", image: "/shop5.jpg" }
+  ];
 
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-800 pb-20">
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold text-sky-600">
-            {SITE_NAME} (GIS Massage)
-          </Link>
-          <Link href="/" className="text-sm text-slate-500 hover:text-slate-800">
-            &larr; 홈으로 돌아가기
+    <div className="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans selection:bg-sky-500 selection:text-white">
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-40 px-4 py-3 shadow-sm">
+        <div className="max-w-4xl mx-auto flex justify-between items-center">
+          <Link href="/" className="text-xl font-bold text-sky-600">{SITE_NAME} (GIS Massage)</Link>
+          <Link href="/" className="text-xs font-bold text-sky-600 bg-sky-50 px-3 py-1.5 rounded-xl border border-sky-100 hover:bg-sky-600 hover:text-white transition-all">
+            &larr; 메인 홈으로
           </Link>
         </div>
       </header>
 
-      <nav className="bg-white border-b border-slate-200 py-3 px-4 text-xs text-slate-500">
-        <div className="max-w-6xl mx-auto flex items-center gap-2">
-          <Link href="/" className="text-sky-600 font-semibold hover:underline">홈</Link>
-          <span>&gt;</span>
-          <span className="text-slate-900 font-bold">{region.name}</span>
-        </div>
-      </nav>
+      <main className="max-w-4xl mx-auto px-4 py-8 w-full flex-1 space-y-10">
+        <section className="relative rounded-3xl overflow-hidden border border-slate-200 shadow-sm bg-gradient-to-b from-slate-900 to-slate-800 p-8 text-white space-y-3">
+          <span className="text-sky-400 text-xs font-black tracking-widest uppercase">LOCAL HEALING GUIDE</span>
+          <h1 className="text-2xl md:text-4xl font-black">{fullTitle} 프리미엄 힐링 테라피 안내</h1>
+          <p className="text-xs md:text-sm text-slate-300 max-w-xl leading-relaxed">
+            {fullTitle} 고객님을 위한 엄선된 테라피 및 에스테틱 바디케어 제휴 샵 안내입니다. 검증된 프로그램과 투명한 정보를 확인해 보세요.
+          </p>
+        </section>
 
-      <section className="max-w-6xl mx-auto py-10 px-4">
-        <div className="mb-8">
-          <span className="bg-sky-100 text-sky-700 text-xs font-semibold px-2.5 py-1 rounded-md mb-2 inline-block">
-            {region.name} 제휴 샵 안내
-          </span>
-          <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 mb-2">
-            {region.name} 지역별 프리미엄 힐링 테라피 & 바디케어
-          </h1>
-          <p className="text-slate-600 text-sm md:text-base">수도권 전 지역 투명한 정찰제 및 100% 안심 후불제 시스템</p>
-        </div>
+        {/* 하위 동(읍/면) 선택 칩 리스트 */}
+        {districtInfo && districtInfo.dongs && districtInfo.dongs.length > 0 && (
+          <section className="bg-white border border-slate-200 p-6 rounded-3xl space-y-4 shadow-sm">
+            <h2 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+              📍 {districtName} 세부 지역(동·읍·면) 선택
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {districtInfo.dongs.map((dongName, idx) => (
+                <Link
+                  key={idx}
+                  href={`/${city}/${district}/${encodeURIComponent(dongName)}`}
+                  className="px-3.5 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600 hover:border-sky-300 transition"
+                >
+                  {dongName} &rarr;
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
-        {/* 🌟 별도로 분리된 클라이언트 셔플 컴포넌트 호출 */}
-        <RandomDistrictList districts={districtsArray} cityKey={cityKey} />
-      </section>
-
-      <footer className="bg-white border-t border-slate-200 py-8 text-center text-xs text-slate-400 mt-20">
-        <p>© 2026 {SITE_NAME} (GIS Massage). All rights reserved.</p>
-        <p className="mt-1">도메인: {SITE_URL}/{cityKey}/</p>
-      </footer>
-    </main>
+        {/* 🌟 클라이언트 셔플 컴포넌트 호출 */}
+        <RandomDistrictShopList shops={shops} fullTitle={fullTitle} city={city} district={district} />
+      </main>
+    </div>
   );
 }
