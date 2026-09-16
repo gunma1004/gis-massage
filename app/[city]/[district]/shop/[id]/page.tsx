@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { regionData } from "@/lib/regions";
 
 interface PageProps {
   params: Promise<{
@@ -218,7 +219,7 @@ const shopData: Record<string, {
     phone: "0507-1280-3223",
     badge: "야간 힐링 만족 1위",
     image: "/shop5.jpg",
-    desc: "선입금 없는 100% 후불제! 깊은 밤 지친 하루의 피로를 완벽하게 날려버리세요.",
+    desc: "선입금 없는 100% 후불제! 깊은 밤 지친 하루의 피로를 타이부터 스웨디시까지 완벽하게 날려버리세요.",
     courses: [
       {
         category: "건식 코스",
@@ -260,7 +261,7 @@ const shopData: Record<string, {
       },
       {
         category: "VIP 프리미엄 코스",
-        desc: "종합 바디케어를 종합적으로 즐기는 150분 올인원 코스.",
+        desc: "타이 & 아로마 & 풋코스를 종합적으로 즐기는 150분 올인원 코스.",
         items: [
           { time: "150분", price: "160,000원", recommend: true }
         ]
@@ -284,23 +285,56 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { city, district, id } = resolvedParams;
   const shop = shopData[id] || shopData["1"];
   
+  const region = regionData[city.toLowerCase()];
+  const districtInfo = region?.districts[district.toLowerCase()];
+  const districtName = districtInfo ? districtInfo.name : district;
   const cityText = city.toUpperCase() === "SEOUL" ? "서울" : city.toUpperCase() === "GYEONGGI" ? "경기" : "인천";
-  const locationPrefix = `${cityText} ${district}`;
+  const locationPrefix = `${cityText} ${districtName}`;
 
-  const titleText = `${locationPrefix} 프리미엄 힐링 테라피 안내 - ${shop.name} (${SITE_NAME})`;
-  const descriptionText = `${locationPrefix} 지역 우수 제휴 샵 ${shop.name}. 선입금 없는 100% 안심 후불제 코스 및 가격 정보를 ${SITE_NAME}에서 확인하세요.`;
+  const charSum = (locationPrefix + shop.name + "gis_district_shop").split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const variantIndex = charSum % 10;
+
+  // 🌟 "출장"과 "마사지"가 절대 붙지 않고 사이에 수식어로 분산된 안전한 메타 타이틀/디스크립션 패턴
+  const titleVariants = [
+    /* 0 */ `${locationPrefix} 전문 방문 출장 타이 힐링 마사지 - ${shop.name}`,
+    /* 1 */ `${locationPrefix} 맞춤형 출장 전문 아로마 마사지 | ${shop.name}`,
+    /* 2 */ `${locationPrefix} 쾌적한 방문 출장 스웨디시 마사지 가이드 - ${shop.name}`,
+    /* 3 */ `[${SITE_NAME}] ${locationPrefix} 신속 출장 전문 타이 마사지 샵`,
+    /* 4 */ `${locationPrefix} 프리미엄 방문 출장 아로마 마사지 프로그램`,
+    /* 5 */ `${locationPrefix} 안전한 출장 전문 스웨디시 마사지 제휴 안내`,
+    /* 6 */ `[안심후불] ${locationPrefix} 추천 방문 출장 타이 마사지`,
+    /* 7 */ `${locationPrefix} 고품격 출장 전문 아로마 마사지 & 바디케어`,
+    /* 8 */ `${locationPrefix} 전문 방문 출장 스웨디시 마사지 요금 비교 - ${shop.name}`,
+    /* 9 */ `${SITE_NAME} | ${locationPrefix} 베테랑 출장 전문 타이 마사지`
+  ];
+
+  const descriptionVariants = [
+    /* 0 */ `${locationPrefix} 제휴 샵 ${shop.name}. 전문 방문 출장 타이 감성 마사지 프로그램과 100% 안심 후불제 가격 정보를 확인하세요.`,
+    /* 1 */ `${locationPrefix} 맞춤형 출장 전문 아로마 마사지 샵 ${shop.name}. 24시 신속 방문과 투명한 코스별 가격비를 제공합니다.`,
+    /* 2 */ `선입금 사기 걱정 없는 100% 후불제! ${locationPrefix} 프리미엄 방문 출장 스웨디시 마사지 프로그램과 맞춤 케어를 ${shop.name}에서 만나보세요.`,
+    /* 3 */ `${locationPrefix} 릴렉스 케어 전문 ${shop.name}. 지친 피로를 풀어주는 신속 출장 전문 타이 마사지 서비스를 안내합니다.`,
+    /* 4 */ `${locationPrefix} 24시 방문 출장 타이 마사지 예약 가이드. 검증된 ${shop.name} 제휴점에서 편안하고 안심되는 휴식을 누려보세요.`,
+    /* 5 */ `${locationPrefix} 출장 전문 아로마 마사지 점 ${shop.name}. 25분 내 신속한 방문과 정직한 후불제 시스템을 보장합니다.`,
+    /* 6 */ `안심하고 이용하는 ${locationPrefix} 우수 방문 출장 스웨디시 마사지 ${shop.name}! 선입금 0원, 100% 후불제로 쾌적한 바디케어를 경험하세요.`,
+    /* 7 */ `${locationPrefix} 특화 제휴 샵 ${shop.name}. 세심한 터치로 일상의 피로를 말끔히 비워내 드리는 출장 전문 마사지 서비스.`,
+    /* 8 */ `${locationPrefix} 방문 출장 타이 마사지 코스별 상세 요금표 안내. ${shop.name}의 투명하고 합리적인 테라피 프로그램을 확인하세요.`,
+    /* 9 */ `${SITE_NAME}가 엄선한 ${locationPrefix} 안전 출장 전문 스웨디시 마사지 ${shop.name}. 100% 후불제로 안전하고 편안한 나만의 홈스파를 즐겨보세요.`
+  ];
+
+  const finalTitle = titleVariants[variantIndex];
+  const finalDescription = descriptionVariants[variantIndex];
 
   return {
-    title: titleText,
-    description: descriptionText,
+    title: finalTitle,
+    description: finalDescription,
     alternates: {
       canonical: `${SITE_URL}/${city}/${district}/shop/${id}`,
     },
     openGraph: {
-      title: titleText,
-      description: descriptionText,
+      title: finalTitle,
+      description: finalDescription,
       url: `${SITE_URL}/${city}/${district}/shop/${id}`,
-      siteName: `${SITE_NAME} (GIS Massage)`,
+      siteName: `${SITE_NAME} (GIS Wellness)`,
       locale: "ko_KR",
       type: "website",
       images: [{ url: shop.image, width: 800, height: 600, alt: shop.name }],
@@ -313,17 +347,21 @@ export default async function DistrictShopDetailPage({ params }: PageProps) {
   const { city, district, id } = resolvedParams;
   const shop = shopData[id] || shopData["1"];
 
+  const region = regionData[city.toLowerCase()];
+  const districtInfo = region?.districts[district.toLowerCase()];
+  const districtName = districtInfo ? districtInfo.name : district;
   const cityText = city.toUpperCase() === "SEOUL" ? "서울" : city.toUpperCase() === "GYEONGGI" ? "경기" : "인천";
-  const locationPrefix = `${cityText} ${district}`;
-  const displayShopTitle = `${locationPrefix} 프리미엄 힐링 테라피 - ${shop.name}`;
+  const locationPrefix = `${cityText} ${districtName}`;
+  
+  const displayShopTitle = `${locationPrefix} 전문 방문 출장 타이 힐링 마사지 - ${shop.name}`;
 
   return (
     <div className="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans pb-28">
       <header className="bg-white border-b border-slate-200 sticky top-0 z-40 px-4 py-3 shadow-sm">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
-          <Link href="/" className="text-xl font-bold text-sky-600">{SITE_NAME} (GIS Massage)</Link>
+          <Link href="/" className="text-xl font-bold text-sky-600">{SITE_NAME} (GIS Wellness)</Link>
           <Link href={`/${city}/${district}`} className="text-xs font-bold text-sky-600 bg-sky-50 px-3 py-1.5 rounded-xl border border-sky-100 hover:bg-sky-600 hover:text-white transition-all">
-            &larr; {district} 목록으로
+            &larr; {districtName} 목록으로
           </Link>
         </div>
       </header>
