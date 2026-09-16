@@ -288,18 +288,49 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const shop = shopDatabase[id] || shopDatabase["1"];
   
   const locationKeyword = `${cityName} ${districtName} ${dongName}`;
-  const titleText = `${locationKeyword} 프리미엄 힐링 테라피 - ${shop.name}`;
-  const descText = `${locationKeyword} 제휴 샵 ${shop.name}. 100% 안심 후불제 프로그램 및 코스별 가격 정보를 ${SITE_NAME}에서 확인하세요.`;
+
+  // 🌟 문자열 해시를 이용한 10가지 고유 패턴 순환 ("출장"과 "마사지"가 수식어로 분산됨)
+  const charSum = (locationKeyword + shop.name + "gis_dong_shop_meta").split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const variantIndex = charSum % 10;
+
+  const titleVariants = [
+    /* 0 */ `${locationKeyword} 전문 방문 출장 타이 힐링 마사지 - ${shop.name}`,
+    /* 1 */ `${locationKeyword} 맞춤형 출장 전문 아로마 마사지 | ${shop.name}`,
+    /* 2 */ `${locationKeyword} 쾌적한 방문 출장 스웨디시 마사지 가이드 - ${shop.name}`,
+    /* 3 */ `[${SITE_NAME}] ${locationKeyword} 신속 출장 전문 타이 마사지 샵`,
+    /* 4 */ `${locationKeyword} 프리미엄 방문 출장 아로마 마사지 프로그램`,
+    /* 5 */ `${locationKeyword} 안전한 출장 전문 스웨디시 마사지 제휴 안내`,
+    /* 6 */ `[안심후불] ${locationKeyword} 추천 방문 출장 타이 마사지`,
+    /* 7 */ `${locationKeyword} 고품격 출장 전문 아로마 마사지 & 바디케어`,
+    /* 8 */ `${locationKeyword} 전문 방문 출장 스웨디시 마사지 요금 비교 - ${shop.name}`,
+    /* 9 */ `${SITE_NAME} | ${locationKeyword} 베테랑 출장 전문 타이 마사지`
+  ];
+
+  const descriptionVariants = [
+    /* 0 */ `${locationKeyword} 제휴 샵 ${shop.name}. 전문 방문 출장 타이 감성 마사지 프로그램과 100% 안심 후불제 가격 정보를 확인하세요.`,
+    /* 1 */ `${locationKeyword} 맞춤형 출장 전문 아로마 마사지 샵 ${shop.name}. 24시 신속 방문과 투명한 코스별 가격비를 제공합니다.`,
+    /* 2 */ `선입금 사기 걱정 없는 100% 후불제! ${locationKeyword} 프리미엄 방문 출장 스웨디시 마사지 프로그램과 맞춤 케어를 ${shop.name}에서 만나보세요.`,
+    /* 3 */ `${locationKeyword} 릴렉스 케어 전문 ${shop.name}. 지친 피로를 풀어주는 신속 출장 전문 타이 마사지 서비스를 안내합니다.`,
+    /* 4 */ `${locationKeyword} 24시 방문 출장 타이 마사지 예약 가이드. 검증된 ${shop.name} 제휴점에서 편안하고 안심되는 휴식을 누려보세요.`,
+    /* 5 */ `${locationKeyword} 출장 전문 아로마 마사지 점 ${shop.name}. 25분 내 신속한 방문과 정직한 후불제 시스템을 보장합니다.`,
+    /* 6 */ `안심하고 이용하는 ${locationKeyword} 우수 방문 출장 스웨디시 마사지 ${shop.name}! 선입금 0원, 100% 후불제로 쾌적한 바디케어를 경험하세요.`,
+    /* 7 */ `${locationKeyword} 특화 제휴 샵 ${shop.name}. 세심한 터치로 일상의 피로를 말끔히 비워내 드리는 출장 전문 마사지 서비스.`,
+    /* 8 */ `${locationKeyword} 방문 출장 타이 마사지 코스별 상세 요금표 안내. ${shop.name}의 투명하고 합리적인 테라피 프로그램을 확인하세요.`,
+    /* 9 */ `${SITE_NAME}가 엄선한 ${locationKeyword} 안전 출장 전문 스웨디시 마사지 ${shop.name}. 100% 후불제로 안전하고 편안한 나만의 홈스파를 즐겨보세요.`
+  ];
+
+  const finalTitle = titleVariants[variantIndex];
+  const finalDescription = descriptionVariants[variantIndex];
 
   return {
-    title: titleText,
-    description: descText,
+    title: finalTitle,
+    description: finalDescription,
     alternates: {
       canonical: `${SITE_URL}/${city}/${district}/${dong}/shop/${id}`,
     },
     openGraph: {
-      title: titleText,
-      description: descText,
+      title: finalTitle,
+      description: finalDescription,
       url: `${SITE_URL}/${city}/${district}/${dong}/shop/${id}`,
       siteName: `${SITE_NAME} (GIS Wellness)`,
       locale: "ko_KR",
@@ -322,7 +353,7 @@ export default async function DongShopDetailPage({ params }: PageProps) {
   const shop = shopDatabase[id] || shopDatabase["1"];
 
   const fullLocation = `${cityName} ${districtName} ${dongName}`;
-  const displayShopTitle = `${fullLocation} 프리미엄 테라피 - ${shop.name}`;
+  const displayShopTitle = `${fullLocation} 전문 방문 출장 타이 힐링 마사지 - ${shop.name}`;
 
   const allShopsList = Object.entries(shopDatabase).map(([sId, sVal]) => ({
     id: sId,
