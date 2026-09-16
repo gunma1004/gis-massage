@@ -1,24 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { regionData } from "@/lib/regions"; // 🌟 전체 통합 지역 데이터 import
+import { regionData } from "@/lib/regions";
 
 export default function MainClientUI() {
   const [activeSido, setActiveSido] = useState("seoul");
-  const [shuffledDistricts, setShuffledDistricts] = useState<Array<[string, { name: string; dongs: string[] }]>>([]);
-
   const selectedRegion = regionData[activeSido] || regionData["seoul"];
-
-  // 🌟 새로고침 및 탭 이동 시 구/시/군 목록 순서를 무작위로 섞어주는 로직
-  useEffect(() => {
-    const districtsArray = Object.entries(selectedRegion.districts);
-    for (let i = districtsArray.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [districtsArray[i], districtsArray[j]] = [districtsArray[j], districtsArray[i]];
-    }
-    setShuffledDistricts(districtsArray);
-  }, [activeSido, selectedRegion]);
+  const districtsArray = Object.entries(selectedRegion.districts);
 
   return (
     <div className="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
@@ -38,7 +27,7 @@ export default function MainClientUI() {
         </div>
       </header>
 
-      {/* 🌟 banner.jpg 배너 적용 및 스팸/출장/마사지 키워드가 전혀 없는 클린 웰니스 소개 배너 */}
+      {/* 🌟 banner.jpg 배너 영역 */}
       <section className="relative overflow-hidden bg-slate-900 text-center border-b border-slate-200 py-16 px-4">
         <img 
           src="/banner.jpg" 
@@ -80,9 +69,9 @@ export default function MainClientUI() {
           ))}
         </div>
 
-        {/* 🌟 모든 구/시/군 및 세부 동 목록 그리드/태그 정렬 출력 */}
+        {/* 구/시/군 순서 고정 출력 */}
         <div className="space-y-4">
-          {shuffledDistricts.map(([distKey, distVal]) => (
+          {districtsArray.map(([distKey, distVal]) => (
             <div key={distKey} className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
               <div className="font-extrabold text-slate-900 text-base mb-3 pb-2 border-b border-slate-100 flex items-center justify-between">
                 <span>{distVal.name}</span>
