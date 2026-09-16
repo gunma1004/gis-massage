@@ -26,6 +26,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: SITE_URL,
   },
+  // 🌟 네이버 웹마스터툴 소유권 확인 태그 추가
+  other: {
+    "naver-site-verification": "00e7695442b89d369943895964f00b130a83f820",
+  },
   openGraph: {
     title: `${SITE_NAME} | 경기·인천·서울 힐링 테라피 플랫폼`,
     description: "경기, 인천, 서울 전 지역의 엄선된 프리미엄 힐링 테라피 및 바디케어 정보를 간편하게 찾아보세요.",
