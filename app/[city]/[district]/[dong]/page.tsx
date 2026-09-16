@@ -27,15 +27,47 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   
   const locationKeyword = `${cityName} ${districtName} ${dongName}`;
 
+  const charSum = (locationKeyword + "gis_dong_meta").split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const variantIndex = charSum % 10;
+
+  const titleVariants = [
+    /* 0 */ `${locationKeyword} 프리미엄 힐링 테라피 및 마사지 안내 - ${SITE_NAME}`,
+    /* 1 */ `${locationKeyword} 전문 아로마 마사지 및 바디케어 가이드 | ${SITE_NAME}`,
+    /* 2 */ `[${SITE_NAME}] ${locationKeyword} 릴렉스 스웨디시 마사지 제휴 샵`,
+    /* 3 */ `${locationKeyword} 정통 웰니스 마사지 프로그램 및 제휴처 모음`,
+    /* 4 */ `${locationKeyword} 안심 힐링 스페이스, 맞춤 마사지 정보 - ${SITE_NAME}`,
+    /* 5 */ `[공식 제휴] ${locationKeyword} 쾌적한 아로마 & 스웨디시 마사지`,
+    /* 6 */ `${locationKeyword} 1:1 맞춤형 피로회복 마사지 테라피 안내 - ${SITE_NAME}`,
+    /* 7 */ `체계적인 바디케어 | ${locationKeyword} 전문 마사지 제휴 가이드`,
+    /* 8 */ `${locationKeyword} 도심 속 힐링, 프리미엄 마사지 프로그램`,
+    /* 9 */ `${SITE_NAME} 추천 ${locationKeyword} 맞춤 힐링 마사지 제휴 정보`
+  ];
+
+  const descriptionVariants = [
+    /* 0 */ `${locationKeyword} 지역 검증된 프리미엄 힐링 테라피 및 마사지 제휴 샵 안내. 투명한 가격과 쾌적한 휴식 공간 정보를 ${SITE_NAME}에서 확인하세요.`,
+    /* 1 */ `${locationKeyword} 맞춤형 바디케어 마사지 프로그램 안내. 지친 일상 속 편안한 휴식과 피로 회복을 돕는 전문 제휴처 정보를 제공합니다.`,
+    /* 2 */ `엄선된 ${locationKeyword} 웰니스 마사지 테라피 가이드. 투명하고 정직한 정찰제 운영으로 편안하고 쾌적한 휴식을 누려보세요.`,
+    /* 3 */ `${locationKeyword} 편안한 휴식 공간과 릴렉싱 마사지 정보. 숙련된 테라피스트의 맞춤 프로그램을 안내해 드립니다.`,
+    /* 4 */ `${locationKeyword} 프라이빗 맞춤 마사지 테라피 제휴 샵 모음. 신뢰할 수 있는 시설과 품격 있는 서비스를 비교해 보세요.`,
+    /* 5 */ `${locationKeyword} 전신 피로회복 힐링 마사지 테라피 안내. 뭉친 근육을 부드럽게 이완하는 전문 바디케어 프로그램입니다.`,
+    /* 6 */ `${locationKeyword} 프리미엄 아로마 및 스웨디시 마사지 제휴 샵 정보. 심신 안정을 돕는 고품격 테라피를 확인하세요.`,
+    /* 7 */ `마사지 프로그램 요금 및 코스 안내. 합리적이고 투명한 정찰제로 안심하고 이용하실 수 있습니다.`,
+    /* 8 */ `베테랑 테라피스트의 ${locationKeyword} 맞춤 마사지 케어. 개인별 컨디션에 맞춘 최적의 힐링 솔루션을 제공합니다.`,
+    /* 9 */ `${SITE_NAME}가 엄선한 ${locationKeyword} 안심 힐링 마사지 테라피 공간. 위생적이고 아늑한 제휴 샵 정보를 전해드립니다.`
+  ];
+
+  const finalTitle = titleVariants[variantIndex];
+  const finalDescription = descriptionVariants[variantIndex];
+
   return {
-    title: `${locationKeyword} 프리미엄 마사지 테라피 및 바디케어 안내 - ${SITE_NAME}`,
-    description: `${locationKeyword} 지역 프리미엄 마사지 테라피 및 바디케어 제휴 샵 안내. 투명한 가격과 쾌적한 휴식 공간 정보를 ${SITE_NAME}에서 확인하세요.`,
+    title: finalTitle,
+    description: finalDescription,
     alternates: {
       canonical: `${SITE_URL}/${city}/${district}/${dong}`,
     },
     openGraph: {
-      title: `${locationKeyword} 프리미엄 마사지 테라피 및 바디케어 안내 - ${SITE_NAME}`,
-      description: `${locationKeyword} 지역 프리미엄 마사지 테라피 및 바디케어 제휴 샵 안내.`,
+      title: finalTitle,
+      description: finalDescription,
       url: `${SITE_URL}/${city}/${district}/${dong}`,
       siteName: `${SITE_NAME} (GIS Massage)`,
       locale: "ko_KR",
