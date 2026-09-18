@@ -12,81 +12,30 @@ interface PageProps {
 
 const SITE_URL = "https://gis-massage.netlify.app";
 
-// 🌟 1. 수식어 300개 이상 풀 생성기 ('출장'과 '마사지' 분산 포함)
-function getModifiersPool(): string[] {
-  const baseAdjectives = [
-    "프라이빗한", "전문적인", "쾌적한 공간의", "안락한 분위기 속", "정성 어린 손길의", 
-    "신뢰할 수 있는", "차분한 힐링", "품격 있는", "맞춤형 바디케어", "일상 회복을 위한",
-    "엄선된 제휴점의", "편안한 휴식을 선사하는", "체계적인 프로그램의", "도심 속 오아시스", "부드러운 릴렉싱",
-    "고품격 웰니스", "피로 회복 맞춤형", "안정감 있는", "조용하고 아늑한", "에너지 충전을 위한",
-    "릴렉싱 바디케어", "프리미엄 힐링", "상쾌한 활력을 주는", "정성 가득한", "지친 몸을 위한"
-  ];
-  const intensityWords = [
-    "깊은", "부드러운", "섬세한", "꼼꼼한", "완벽한", 
-    "탁월한", "특별한", "차별화된", "노련한", "깔끔한",
-    "포근한", "산뜻한"
-  ];
-  const pool: string[] = [];
-  for (const adj of baseAdjectives) {
-    for (const int of intensityWords) {
-      pool.push(`신속한 출장 서비스를 제공하는 ${int} ${adj}`);
-      pool.push(`편안한 출장 홈케어를 지향하는 ${int} ${adj}`);
-      pool.push(`고객 맞춤형 출장 케어를 선사하는 ${int} ${adj}`);
-    }
-  }
-  return pool;
-}
+// 🌟 1단: '출장'과 '마사지'가 연달아 붙지 않는 수식어 패턴 풀
+const shopActionModifiers = [
+  '릴렉스 마사지·홈타이', '소프트스웨디시 마사지·홈타이', '아로마케어 마사지·홈타이',
+  '감성힐링 마사지·홈타이', '프리미엄 마사지·홈타이', '바디케어 마사지·홈타이',
+  '딥티슈이완 마사지·홈타이', '전신힐링 마사지·홈타이', '맞춤형케어 마사지·홈타이',
+  '안심방문 마사지·홈타이', 'VIP스웨디시 마사지·홈타이', '명품테라피 마사지·홈타이',
+  '소프트감성 마사지·홈타이', '림프순환 마사지·홈타이', '포근한힐링 마사지·홈타이',
+  '체형맞춤 마사지·홈타이', '타이스트레칭 마사지·홈타이', '스페셜바디 마사지·홈타이'
+];
 
-// 🌟 2. 서비스 종류 150개 풀 생성기 ('출장'과 '마사지'가 분산된 형태)
-function getServiceTypesPool(): string[] {
-  const coreTechniques = ["스웨디시", "아로마", "타이", "스포츠", "힐링", "바디케어", "릴렉싱", "웰니스", "전문", "프리미엄", "감성", "토탈"];
-  const styles = [
-    "감성 마사지 코스", "맞춤형 마사지 프로그램", "전신 관리 마사지", "전문 테크닉 마사지", 
-    "집중 이완 마사지", "릴렉스 마사지 과정", "힐링 마사지 프로그램", "프리미엄 바디 마사지", 
-    "맞춤형 바디 마사지", "토탈 마사지 솔루션", "바디 릴렉싱 마사지", "시그니처 마사지"
-  ];
-  const pool: string[] = [];
-  for (const tech of coreTechniques) {
-    for (const style of styles) {
-      pool.push(`${tech} 기반의 ${style}`);
-      pool.push(`${tech} 전문 ${style}`);
-      if (pool.length >= 150) break;
-    }
-    if (pool.length >= 150) break;
-  }
-  return pool;
-}
+// 🌟 2단: 시/구 단위 연계 안마 예약 키워드 풀
+const cityBookingActions = [
+  '안마 예약', '안마 방문예약', '테라피 예약', '힐링 안마예약',
+  '바디케어 예약', '홈케어 예약', '방문 안마안내', '스웨디시 예약'
+];
 
-// 🌟 3. 상세 설명 100개 풀 생성기 ('출장'과 '마사지'가 문장 내에서 분산된 형태)
-function getDescriptionsPool(): string[] {
-  const actions = [
-    "숙련된 테라피스트가 고객 계신 곳으로 직접 출장하여 진행하는 전문 마사지 프로그램은", 
-    "엄선된 제휴 샵에서 출장 형태로 제공하는 맞춤형 마사지 서비스는", 
-    "지친 일상 속에서 편안하게 불러보는 출장 힐링 마사지 코스는", 
-    "안락한 공간에서 즐기는 전문적인 출장 테라피 마사지는", 
-    "체계적인 손길을 통해 출장 서비스로 제공되는 프라이빗 마사지 솔루션은", 
-    "부드러운 테크닉이 돋보이는 릴렉스 중심의 출장 바디 마사지 안내는"
-  ];
-  const effects = [
-    "몸과 마음의 피로를 부드럽게 씻어내 줍니다.",
-    "온전한 휴식과 재충전의 시간을 선사합니다.",
-    "지친 신체 리듬을 편안하게 되찾아드립니다.",
-    "일상의 스트레스를 말끔히 해소해 줍니다.",
-    "최상의 릴렉스와 안락함을 제공합니다.",
-    "몸의 긴장을 풀고 가벼운 활력을 채워줍니다.",
-    "오래도록 지속되는 편안한 안정감을 전해드립니다.",
-    "누적된 근육의 긴장을 개운하게 이완시켜 줍니다."
-  ];
-  const pool: string[] = [];
-  for (const act of actions) {
-    for (const eff of effects) {
-      pool.push(`${act} ${eff}`);
-      if (pool.length >= 100) break;
-    }
-    if (pool.length >= 100) break;
-  }
-  return pool;
-}
+// 🌟 디스크립션 가격 및 소구점 조합 풀
+const priceHooks = [
+  '건식 6만원부터 심야할증 없이 방문합니다.',
+  '건식 7만원부터 심야할증 없이 방문합니다.',
+  '스웨디시 8만원부터 추가비용 없이 방문합니다.',
+  '아로마 7만원부터 합리적인 정찰제로 방문합니다.',
+  '타이 6만원부터 현장 결제 후불제로 방문합니다.'
+];
 
 // 🌟 정확한 샵별 코스 및 가격 정보 반영 (5개 제휴점 전체)
 const shopData: Record<string, {
@@ -367,56 +316,45 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const cityText = city.toUpperCase() === "SEOUL" ? "서울" : city.toUpperCase() === "GYEONGGI" ? "경기" : "인천";
   const locationPrefix = `${cityText} ${districtName}`;
 
-  const modifiersPool = getModifiersPool();
-  const serviceTypesPool = getServiceTypesPool();
-  const descriptionsPool = getDescriptionsPool();
-
-  const seedString = locationPrefix + shop.name + id + "gis_district_shop_clean_seo";
+  // 🌟 순차적 인덱스 계산 (shopData[id] 반영 -> 1~5번 샵 간 고유 조합 보장)
+  const seedString = `${locationPrefix}-${id}-giinseo-district-shop-seo`;
   const charSum = seedString.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   
-  const modIndex = charSum % modifiersPool.length;
-  const serviceIndex = (charSum * 3) % serviceTypesPool.length;
-  const descIndex = (charSum * 7) % descriptionsPool.length;
+  const part1Idx = charSum % shopActionModifiers.length;
+  const part2Idx = (charSum * 3) % cityBookingActions.length;
+  const priceIdx = (charSum * 7) % priceHooks.length;
 
-  const selectedModifier = modifiersPool[modIndex];
-  const selectedService = serviceTypesPool[serviceIndex];
-  const selectedDesc = descriptionsPool[descIndex];
-
-  // 🌟 샵 이름, 사이트 이름 제외, '출장'과 '마사지'가 분산된 고유 메타 태그
-  const finalTitle = `${locationPrefix} ${selectedModifier} 제휴점의 ${selectedService}`;
-  const finalDescription = `${locationPrefix} 맞춤형 힐링 네트워크. ${selectedModifier} 진행되는 ${selectedService}. ${selectedDesc}`;
+  // 💡 [서초구 출장 릴렉스 마사지·홈타이 | 서울 안마 예약 | 기인서테라피] 형식 (약 45~50자)
+  const formattedTitle = `${districtName} 출장 ${shopActionModifiers[part1Idx]} | ${cityText} ${cityBookingActions[part2Idx]} | 기인서테라피`;
+  
+  // 💡 [서울 서초구 출장 마사지·홈타이·안마. 검증된 전문 관리사 100% 후불제. 건식 7만원부터 심야할증 없이 방문합니다.] 형식
+  const formattedDesc = `${locationPrefix} 출장 마사지·홈타이·안마. 검증된 전문 관리사 100% 후불제. ${priceHooks[priceIdx]}`;
 
   return {
+    metadataBase: new URL(SITE_URL),
     title: {
-      absolute: finalTitle,
+      absolute: formattedTitle,
     },
-    description: finalDescription,
+    description: formattedDesc,
     alternates: {
       canonical: `${SITE_URL}/${city}/${district}/shop/${id}`,
     },
     keywords: [
-      `${locationPrefix} 타이 마사지`,
-      `${locationPrefix} 아로마 마사지`,
-      `${locationPrefix} 릴렉스 마사지`,
-      `${locationPrefix} 스웨디시 마사지`,
-      `${locationPrefix} 힐링 마사지`,
-      `${locationPrefix} 전신 마사지`,
-      `${locationPrefix} 건식 마사지`,
-      `${locationPrefix} 오일 마사지`,
-      `${locationPrefix} 감성 마사지`,
-      `${locationPrefix} 딥티슈 마사지`,
-      `${locationPrefix} 웰니스 마사지`,
-      `${locationPrefix} 프라이빗 마사지`,
-      `${locationPrefix} 맞춤 마사지`,
-      `${locationPrefix} 24시 마사지`,
+      `${locationPrefix} 마사지`,
+      `${districtName} 출장마사지`,
+      `${districtName} 홈타이`,
+      `${cityText} 안마`,
+      `${locationPrefix} 아로마마사지`,
+      `${locationPrefix} 스웨디시`,
+      "기인서테라피"
     ],
     openGraph: {
-      title: finalTitle,
-      description: finalDescription,
+      title: formattedTitle,
+      description: formattedDesc,
       url: `${SITE_URL}/${city}/${district}/shop/${id}`,
       locale: "ko_KR",
       type: "website",
-      images: [{ url: shop.image, width: 800, height: 600, alt: shop.name }],
+      images: [{ url: shop.image, width: 800, height: 600, alt: `${locationPrefix} 마사지` }],
     },
   };
 }
@@ -432,13 +370,13 @@ export default async function DistrictShopDetailPage({ params }: PageProps) {
   const cityText = city.toUpperCase() === "SEOUL" ? "서울" : city.toUpperCase() === "GYEONGGI" ? "경기" : "인천";
   const locationPrefix = `${cityText} ${districtName}`;
   
-  const displayShopTitle = `${locationPrefix} 프리미엄 힐링 마사지 - ${shop.name}`;
+  const displayShopTitle = `${locationPrefix} 출장 방문 마사지 - ${shop.name}`;
 
   return (
     <div className="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans pb-28">
       <header className="bg-white border-b border-slate-200 sticky top-0 z-40 px-4 py-3 shadow-sm">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
-          <Link href="/" className="text-xl font-bold text-sky-600">Wellness Guide</Link>
+          <Link href="/" className="text-xl font-bold text-sky-600">기인서테라피</Link>
           <Link href={`/${city}/${district}`} className="text-xs font-bold text-sky-600 bg-sky-50 px-3 py-1.5 rounded-xl border border-sky-100 hover:bg-sky-600 hover:text-white transition-all">
             &larr; {districtName} 목록으로
           </Link>
